@@ -40,7 +40,7 @@ export default {
 
   methods: {
     async loadFrameData () {
-      const {data: res} = await this.$http.get('http://192.168.182.128/assetdb/pub/perf/get_perf_detail.php?request_param=FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime&&run_id=4')
+      const {data: res} = await this.$http.get('http://192.168.182.128/assetdb/pub/perf/get_perf_avg.php?request_param=FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime&run_id=4&frame_count=100')
       this.map_id = res.MapID
       this.frameTimes = res.FrameTime.map(Number)
       this.gameThreadTimes = res.GameThreadTime.map(Number)
@@ -48,18 +48,8 @@ export default {
       this.rhiThreadTimes = res.RenderThreadTime.map(Number)
       this.gpuTimes = res.GPUTime.map(Number)
 
-      this.frameTimesAvg = this.calcAvg(this.frameTimes, true)
-      this.gameThreadTimesAvg = this.calcAvg(this.gameThreadTimes, true)
-      this.renderThreadTimesAvg = this.calcAvg(this.renderThreadTimes, true)
-      this.rhiThreadTimesAvg = this.calcAvg(this.rhiThreadTimes, true)
-      this.gpuTimesAvg = this.calcAvg(this.gpuTimes, true)
-
       this.frameTimes.forEach(item => {
         this.fps.push(Math.floor(1000 / item))
-      })
-
-      this.frameTimesAvg.forEach(item => {
-        this.fpsAvg.push(Math.floor(1000 / item))
       })
 
       this.initChart()
@@ -82,6 +72,7 @@ export default {
         },
         yAxis: {
           type: 'value',
+          name: 'ms',
           scale: true,
           splitNumber: 10,
           boundaryGap: [0.2, 0.2]
@@ -91,31 +82,31 @@ export default {
             name: 'Frame',
             type: 'line',
             smooth: true,
-            data: this.frameTimesAvg
+            data: this.frameTimes
           },
           {
             name: 'GameThread',
             type: 'line',
             smooth: true,
-            data: this.gameThreadTimesAvg
+            data: this.gameThreadTimes
           },
           {
             name: 'RenderThread',
             type: 'line',
             smooth: true,
-            data: this.renderThreadTimesAvg
+            data: this.renderThreadTimes
           },
           {
             name: 'RHIThread',
             type: 'line',
             smooth: true,
-            data: this.rhiThreadTimesAvg
+            data: this.rhiThreadTimes
           },
           {
             name: 'GPU',
             type: 'line',
             smooth: true,
-            data: this.gpuTimesAvg
+            data: this.gpuTimes
           }
         ]
       }

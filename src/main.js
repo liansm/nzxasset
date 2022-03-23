@@ -5,9 +5,11 @@ import App from './App'
 import router from './router'
 import VueResource from 'vue-resource'
 import axios from 'axios'
+import ElementUI from 'element-ui'
 
 Vue.use(VueResource)
 Vue.use(axios)
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 

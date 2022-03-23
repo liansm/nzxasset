@@ -40,7 +40,7 @@ export default {
 
   methods: {
     async loadFrameData () {
-      const {data: res} = await this.$http.get('http://192.168.182.128/assetdb/pub/perf/get_perf_avg.php?request_param=FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime&run_id=4&frame_count=100')
+      const {data: res} = await this.$http.get('http://192.168.182.128/assetdb/pub/perf/get_perf_detail.php?request_param=FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime&run_id=4&frame_interval=100')
       this.map_id = res.MapID
       this.frameTimes = res.FrameTime.map(Number)
       this.gameThreadTimes = res.GameThreadTime.map(Number)
@@ -65,6 +65,16 @@ export default {
 
         legend: {
           data: ['Frame', 'GameThread', 'RenderThread', 'RHIThread', 'GPU']
+        },
+
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#76baf1'
+            }
+          }
         },
 
         xAxis: {

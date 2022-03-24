@@ -1,19 +1,7 @@
 <template>
   <div>
-	<div>
-	  <el-select v-model="value" placeholder="请选择" @change="onFrameSelectChange">
-		<el-option
-		  v-for="item in frame_options"
-		  :key="item.value"
-		  :label="item.label"
-		  :value="item.value">
-		</el-option>
-	  </el-select>
-	</div>
-
   	<div style="width:100%; height:300px" ref="fpsChart"></div>
   	<div style="width:100%; height:300px" ref="frameChart"></div>
-  
   </div>
 </template>
 
@@ -27,7 +15,7 @@ require('echarts/lib/component/grid')
 
 export default {
   props: {
-    frameChart: String,
+    frameStep: Number
   },
 
   data () {
@@ -44,31 +32,7 @@ export default {
       gpuTimes: [],
       gpuTimesAvg: [],
       fps: [],
-      fpsAvg: [],
-      frameStep: 0,
-
-      frame_options: [{
-        value: 100,
-        label: '100帧'
-      },{
-        value: 50,
-        label: '50帧'
-      },{
-        value: 20,
-        label: '20帧'
-      },{
-        value: 10,
-        label: '10帧'
-      },{
-        value: 5,
-        label: '5帧'
-      },{
-        value: 1,
-        label: '单帧'
-      }],  
-
-     value: 100
-	
+      fpsAvg: []
     }
   },
 
@@ -83,8 +47,7 @@ export default {
     },
 
     async loadFrameData () {
-      let frameInterval = this.value;
-      let data_url = 'http://192.168.182.128/assetdb/pub/perf/get_perf_detail.php?request_param=FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime&run_id=4&frame_interval=' + frameInterval;
+      let data_url = 'http://192.168.182.128/assetdb/pub/perf/get_perf_detail.php?request_param=FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime&run_id=4&frame_interval=' + this.frameStep;
       const {data: res} = await this.$http.get(data_url);
       this.frameTimes = res.FrameTime.map(Number)
       this.gameThreadTimes = res.GameThreadTime.map(Number)

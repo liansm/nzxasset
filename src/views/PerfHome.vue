@@ -1,49 +1,75 @@
 <template>
   <div class="dashboard-container">
-    <el-row :gutter="100" class="panel-group" >
-      <el-col :span="4" class="card-panel-col">
-        <div class="card-panel grid-content bg-purple">
-        </div>
-      </el-col>
-
-      <el-col :span="4" class="card-panel-col"><div class="card-panel grid-content bg-purple">222</div></el-col>
-      <el-col :span="4" class="card-panel-col"><div class="card-panel grid-content bg-purple">333</div></el-col>
-      <el-col :span="4" class="card-panel-col"><div class="card-panel grid-content bg-purple">444</div></el-col>
-      <el-col :span="4" class="card-panel-col"><div class="card-panel grid-content bg-purple">555</div></el-col>
-      <el-col :span="4" class="card-panel-col"><div class="card-panel grid-content bg-purple">666</div></el-col>
-    </el-row>
+	<frame-panel />
 
     <el-divider></el-divider>
 
 	<div id="frame-chart">
-      <el-row style="background:rgb(240, 242, 245);">
-	    <frame-chart  />
+      <el-row type="flex" style="background:fff;" justify="start">
+        <el-col :span="4">
+	      <label>合并帧:</label>
+	      <el-select v-model="value" placeholder="请选择" @change="onFrameSelectChange">
+		    <el-option
+		    v-for="item in frame_options"
+		    :key="item.value"
+		    :label="item.label"
+		    :value="item.value">
+		    </el-option>
+	      </el-select>
+        </el-col>
+	  </el-row>
+
+    <el-row style="background:rgb(240, 242, 245);">
+      <frame-chart  :frame-step=value :key="frameChartKey"/>
 	  </el-row>
     </div>
 
     <el-divider></el-divider>
-
   </div>
 </template>
 
 <script>
 
 import FrameChart from '@/components/FrameChart'
+import FramePanel from '@/components/FramePanel'
 
 export default{
   data() {
 	return {
+      frame_options: [{
+        value: 100,
+        label: '100帧'
+      },{
+        value: 50,
+        label: '50帧'
+      },{
+        value: 20,
+        label: '20帧'
+      },{
+        value: 10,
+        label: '10帧'
+      },{
+        value: 5,
+        label: '5帧'
+      },{
+        value: 1,
+        label: '单帧'
+      }],  
+
+     value: 100,
+     frameChartKey: 0
     }
   },
   
   methods: {
-    changeFrameStep () {
-      frameIntervalChanged = true
+    onFrameSelectChange() {
+		this.frameChartKey += 1
     }
   },
 
   components: {
-    FrameChart
+    FrameChart,
+    FramePanel
   }
 }
 

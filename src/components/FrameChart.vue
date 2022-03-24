@@ -1,5 +1,9 @@
 <template>
-  <div :id="chartId" style="width:100%; height:500px" ref="chartId"></div>
+  <div>
+    <el-slider v-model="frameStep" :step="20" show-stops style="width:30%" v-on:change="changeFrameStep" ></el-slider>
+  	<div style="width:100%; height:300px" ref="fpsChart"></div>
+  	<div style="width:100%; height:300px" ref="frameChart"></div>
+  </div>
 </template>
 
 <script>
@@ -12,13 +16,12 @@ require('echarts/lib/component/grid')
 
 export default {
   props: {
-    chartId: String
+    frameChart: String,
   },
 
   data () {
     return {
       chart: null,
-      map_id: 0,
       frameTimes: [],
       frameTimesAvg: [],
       gameThreadTimes: [],
@@ -30,7 +33,8 @@ export default {
       gpuTimes: [],
       gpuTimesAvg: [],
       fps: [],
-      fpsAvg: []
+      fpsAvg: [],
+      frameStep: 0
     }
   },
 
@@ -39,9 +43,21 @@ export default {
   },
 
   methods: {
+    changeFrameStep () {
+		console.info('Change Step= + this.frameStep')
+
+		this.fps = []
+        this.loadFrameData()
+    },
+
     async loadFrameData () {
-      const {data: res} = await this.$http.get('http://192.168.182.128/assetdb/pub/perf/get_perf_detail.php?request_param=FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime&run_id=4&frame_interval=100')
-      this.map_id = res.MapID
+      let frameInterval = 100- this.frameStep;
+      if(frameInterval == 0){
+        frameInterval = 1
+      }
+
+      let data_url = 'http://192.168.182.128/assetdb/pub/perf/get_perf_detail.php?request_param=FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime&run_id=4&frame_interval=' + frameInterval;
+      const {data: res} = await this.$http.get(data_url);
       this.frameTimes = res.FrameTime.map(Number)
       this.gameThreadTimes = res.GameThreadTime.map(Number)
       this.renderThreadTimes = res.RenderThreadTime.map(Number)
@@ -52,15 +68,61 @@ export default {
         this.fps.push(Math.floor(1000 / item))
       })
 
-      this.initChart()
+      this.initFpsChart()
+      this.initFrameChart()
     },
 
-    initChart () {
-      this.chart = echarts.init(this.$refs.chartId)
+    initFpsChart () {
+      this.chart = echarts.init(this.$refs.fpsChart)
 
       let option = {
         title: {
-          text: '地图号:' + this.map_id
+          text: 'FPS'
+        },
+
+        legend: {
+          data: ['FPS']
+        },
+
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#76baf1'
+            }
+          }
+        },
+
+        xAxis: {
+          type: 'category'
+        },
+        yAxis: {
+          type: 'value',
+          name: '帧',
+          scale: true,
+          splitNumber: 10,
+          boundaryGap: [0.2, 0.2]
+        },
+        series: [
+          {
+            name: 'Frame',
+            type: 'line',
+            smooth: true,
+            data: this.fps
+          }
+        ]
+      }
+
+      this.chart.setOption(option)
+    },
+
+    initFrameChart () {
+      this.chart = echarts.init(this.$refs.frameChart)
+
+      let option = {
+        title: {
+          text: '性能图'
         },
 
         legend: {

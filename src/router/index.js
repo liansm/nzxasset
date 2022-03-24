@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import FrameChart from '@/components/FrameChart'
 import PerfHome from '@/views/PerfHome'
-import TestElement from '@/views/TestElement'
 
 Vue.use(Router)
 
@@ -23,11 +22,6 @@ export default new Router({
       path: '/perf_home',
       name: 'PerfHome',
       component: PerfHome
-    },
-    {
-      path: '/test',
-      name: 'TestElement',
-      component: TestElement 
     }
   ]
 })

@@ -1,7 +1,7 @@
 <template>
   <div>
-  	<div style="width:100%; height:300px" ref="fpsChart"></div>
-  	<div style="width:100%; height:300px" ref="frameChart"></div>
+    <div style="width:100%; height:300px" ref="fpsChart"></div>
+    <div style="width:100%; height:300px" ref="frameChart"></div>
   </div>
 </template>
 
@@ -42,13 +42,13 @@ export default {
 
   methods: {
     onFrameSelectChange () {
-		this.fps = []
-        this.loadFrameData()
+      this.fps = []
+      this.loadFrameData()
     },
 
     async loadFrameData () {
-      let data_url = 'http://192.168.182.128/assetdb/pub/perf/get_perf_detail.php?request_param=FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime&run_id=4&frame_interval=' + this.frameStep;
-      const {data: res} = await this.$http.get(data_url);
+      let dataURL = 'http://192.168.208.128/assetdb/perf/get_perf_detail.php?request_param=FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime&run_id=4&frame_interval=' + this.frameStep
+      const {data: res} = await this.$http.get(dataURL)
       this.frameTimes = res.FrameTime.map(Number)
       this.gameThreadTimes = res.GameThreadTime.map(Number)
       this.renderThreadTimes = res.RenderThreadTime.map(Number)

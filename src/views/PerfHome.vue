@@ -1,27 +1,24 @@
 <template>
   <div class="dashboard-container">
-	<frame-panel />
-
+    <frame-panel />
     <el-divider></el-divider>
-
-	<div id="frame-chart">
+    <div id="frame-chart">
       <el-row type="flex" style="background:fff;" justify="start">
         <el-col :span="4">
-	      <label>合并帧:</label>
-	      <el-select v-model="value" placeholder="请选择" @change="onFrameSelectChange">
-		    <el-option
-		    v-for="item in frame_options"
-		    :key="item.value"
-		    :label="item.label"
-		    :value="item.value">
-		    </el-option>
-	      </el-select>
+        <label>合并帧:</label>
+        <el-select v-model="value" placeholder="请选择" @change="onFrameSelectChange">
+        <el-option
+        v-for="item in frame_options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+        </el-option>
+        </el-select>
         </el-col>
-	  </el-row>
-
+    </el-row>
     <el-row style="background:rgb(240, 242, 245);">
       <frame-chart  :frame-step=value :key="frameChartKey"/>
-	  </el-row>
+    </el-row>
     </div>
 
     <el-divider></el-divider>
@@ -34,36 +31,35 @@ import FrameChart from '@/components/FrameChart'
 import FramePanel from '@/components/FramePanel'
 
 export default{
-  data() {
-	return {
+  data () {
+    return {
       frame_options: [{
         value: 100,
         label: '100帧'
-      },{
+      }, {
         value: 50,
         label: '50帧'
-      },{
+      }, {
         value: 20,
         label: '20帧'
-      },{
+      }, {
         value: 10,
         label: '10帧'
-      },{
+      }, {
         value: 5,
         label: '5帧'
-      },{
+      }, {
         value: 1,
         label: '单帧'
-      }],  
+      }],
 
-     value: 100,
-     frameChartKey: 0
+      value: 100,
+      frameChartKey: 0
     }
   },
-  
   methods: {
-    onFrameSelectChange() {
-		this.frameChartKey += 1
+    onFrameSelectChange () {
+      this.frameChartKey += 1
     }
   },
 

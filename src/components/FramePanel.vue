@@ -56,9 +56,23 @@
       </el-col>
     </el-row>
 
-  <div>
-    <div style="width:100%;height:300px" ref="framePieChart"></div>
-  </div>
+  <el-row :gutter="100" class="panel-group" >
+      <el-col :span="5" class="card-panel-pie-col">
+        <div style="height:350px" id="framePieChart"></div>
+      </el-col>
+      <el-col :span="5" class="card-panel-pie-col">
+        <div style="height:350px" id="gameThreadPieChart"></div>
+      </el-col>
+      <el-col :span="5" class="card-panel-pie-col">
+        <div style="height:350px" id="renderThreadPieChart"></div>
+      </el-col>
+      <el-col :span="5" class="card-panel-pie-col">
+        <div style="height:350px" id="rhiThreadPieChart"></div>
+      </el-col>
+      <el-col :span="4" class="card-panel-pie-col">
+        <div style="height:350px" id="gpuPieChart"></div>
+      </el-col>
+  </el-row>
 
   </div>
 </template>
@@ -96,40 +110,49 @@ export default {
     },
 
     initPieChart () {
-      this.chart = echarts.init(this.$refs.framePieChart)
+      let pieChartID = ['framePieChart', 'gameThreadPieChart', 'renderThreadPieChart', 'rhiThreadPieChart', 'gpuPieChart']
+      let pieTitle = ['Frame', 'GameThread', 'RenderThread', 'RHIThread', 'GPU']
 
-      let option = {
-        title: {
-          text: 'Frame',
-          left: 'center'
-        },
-        tooltip: {
-          trigger: 'item'
-        },
-        series: [
-          {
-            name: '占比',
-            type: 'pie',
-            radius: '50%',
-            data: [
-              { value: 1048, name: 'Search Engine' },
-              { value: 735, name: 'Direct' },
-              { value: 580, name: 'Email' },
-              { value: 484, name: 'Union Ads' },
-              { value: 300, name: 'Video Ads' }
-            ],
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0,0,0,0.5)'
+      for (var i = 0; i < pieChartID.length; i++) {
+        var chartDom = document.getElementById(pieChartID[i])
+        let chart = echarts.init(chartDom)
+        let option = {
+          title: {
+            text: pieTitle[i],
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'item'
+          },
+          series: [
+            {
+              name: '占比',
+              type: 'pie',
+              radius: '50%',
+              data: [
+                { value: this.outlineData.FrameDetail[0][i], name: '<=5ms' },
+                { value: this.outlineData.FrameDetail[1][i], name: '10ms' },
+                { value: this.outlineData.FrameDetail[2][i], name: '15ms' },
+                { value: this.outlineData.FrameDetail[3][i], name: '20ms' },
+                { value: this.outlineData.FrameDetail[4][i], name: '30ms' },
+                { value: this.outlineData.FrameDetail[5][i], name: '45ms' },
+                { value: this.outlineData.FrameDetail[6][i], name: '60ms' },
+                { value: this.outlineData.FrameDetail[7][i], name: '100ms' },
+                { value: this.outlineData.FrameDetail[8][i], name: '>100ms' }
+              ],
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0,0,0,0.5)'
+                }
               }
             }
-          }
-        ]
-      }
+          ]
+        }
 
-      this.chart.setOption(option)
+        chart.setOption(option)
+      }
     }
   }
 }

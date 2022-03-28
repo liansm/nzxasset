@@ -19,7 +19,7 @@ export default new Router({
       component: FrameChart
     },
     {
-      path: '/perf_home',
+      path: '/perf_home/:id/',
       name: 'PerfHome',
       component: PerfHome
     }

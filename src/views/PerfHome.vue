@@ -1,5 +1,7 @@
 <template>
   <div class="dashboard-container">
+
+    <!--
     <frame-panel />
     <el-divider></el-divider>
     <div id="frame-chart">
@@ -15,13 +17,21 @@
         </el-option>
         </el-select>
         </el-col>
-    </el-row>
-    <el-row style="background:rgb(240, 242, 245);">
-      <frame-chart  :frame-step=value :key="frameChartKey"/>
-    </el-row>
+      </el-row>
+      <el-row style="background:rgb(240, 242, 245);">
+        <frame-chart  :frame-step=value :key="frameChartKey"/>
+      </el-row>
     </div>
 
     <el-divider></el-divider>
+    -->
+
+    <div>
+      <el-row style="background:rgb(240, 242, 245);">
+        <perf-chart  :frame-step=100 :requestParam="perfParams" :runID=4 key="frameChartKey2"/>
+      </el-row>
+    </div>
+
   </div>
 </template>
 
@@ -29,6 +39,7 @@
 
 import FrameChart from '@/components/FrameChart'
 import FramePanel from '@/components/FramePanel'
+import PerfChart from '@/components/PerfChart'
 
 export default{
   data () {
@@ -54,7 +65,8 @@ export default{
       }],
 
       value: 100,
-      frameChartKey: 0
+      frameChartKey: 0,
+      perfParams: 'FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime'
     }
   },
   methods: {
@@ -65,7 +77,8 @@ export default{
 
   components: {
     FrameChart,
-    FramePanel
+    FramePanel,
+    PerfChart
   }
 }
 

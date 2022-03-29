@@ -48,7 +48,6 @@ export default {
 
     async loadFrameData () {
       let id = this.$route.params.id
-      console.info('id=' + id)
       let dataURL = 'http://192.168.182.128/assetdb/pub/perf/get_perf_detail.php?request_param=FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime&run_id=' + id + '&frame_interval=' + this.frameStep
       const {data: res} = await this.$http.get(dataURL)
       this.frameTimes = res.FrameTime.map(Number)

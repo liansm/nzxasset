@@ -102,7 +102,8 @@ export default {
 
   methods: {
     async loadOutlineData () {
-      let dataURL = 'http://192.168.182.128/assetdb/pub/perf/get_perf_outline.php?run_id=4'
+      let id = this.$route.params.id
+      let dataURL = 'http://192.168.182.128/assetdb/pub/perf/get_perf_outline.php?run_id=' + id
       const {data: res} = await this.$http.get(dataURL)
       this.outlineData = res
       this.dataReady = true

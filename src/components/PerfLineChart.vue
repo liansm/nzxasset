@@ -17,7 +17,10 @@ export default {
   props: {
     frameStep: Number,
     requestParam: String,
-    runID: Number
+    legendArr: [],
+    runID: Number,
+    title: String,
+    yAxisName: String
   },
 
   mounted () {
@@ -32,24 +35,31 @@ export default {
       let requestArr = this.requestParam.split(',')
       let perfParams = []
       for (var i = 0; i < requestArr.length; i++) {
-        perfParams.push(Reflect.get(res, requestArr[i]).map(Number))
+        let perfVal = Reflect.get(res, requestArr[i]).map(Number)
+        if (this.legendArr[i] === 'FPS') {
+          let fpsValues = []
+          perfVal.forEach(item => fpsValues.push(Math.floor(1000 / item)))
+          perfParams.push(fpsValues)
+        } else {
+          perfParams.push(perfVal)
+        }
       }
 
       let chart = echarts.init(this.$refs.PerfChart)
 
       let seriesArr = []
-      for (var j = 0; j < requestArr.length; j++) {
-        let seriesVal = { name: requestArr[j], type: 'line', smooth: true, data: perfParams[j] }
+      for (var j = 0; j < this.legendArr.length; j++) {
+        let seriesVal = { name: this.legendArr[j], type: 'line', smooth: true, data: perfParams[j] }
         seriesArr.push(seriesVal)
       }
 
       let option = {
         title: {
-          text: 'Perf'
+          text: this.title
         },
 
         legend: {
-          data: this.requestArr
+          data: this.legendArr
         },
 
         tooltip: {
@@ -68,7 +78,8 @@ export default {
 
         yAxis: {
           type: 'value',
-          name: 'ms',
+          name: this.yAxisName,
+          min: 0,
           scale: true,
           splitNumber: 10,
           boundaryGap: [0.2, 0.2]

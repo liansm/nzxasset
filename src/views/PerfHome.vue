@@ -4,31 +4,45 @@
     <!--
     <frame-panel />
     <el-divider></el-divider>
-    <div id="frame-chart">
-      <el-row type="flex" style="background:fff;" justify="start">
-        <el-col :span="4">
-        <label>合并帧:</label>
-        <el-select v-model="value" placeholder="请选择" @change="onFrameSelectChange">
-        <el-option
-        v-for="item in frame_options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
-        </el-option>
-        </el-select>
-        </el-col>
-      </el-row>
-      <el-row style="background:rgb(240, 242, 245);">
-        <frame-chart  :frame-step=value :key="frameChartKey"/>
-      </el-row>
-    </div>
-
-    <el-divider></el-divider>
     -->
 
     <div>
       <el-row style="background:rgb(240, 242, 245);">
-        <perf-chart  :frame-step=100 :requestParam="perfParams" :runID=4 key="frameChartKey2"/>
+        <perf-line-chart  :frameStep=fpsChart.frameStep :requestParam=fpsChart.requestParams :runID=currentRunID :legendArr=fpsChart.legendArr
+          :title=fpsChart.title :yAxisName=fpsChart.yAxisName :key=fpsChart.chartKey />
+        <label>合并:</label>
+        <el-select v-model="fpsChart.frameStep" placeholder="请选择" @change="onFPSChartChange">
+          <el-option v-for="item in frame_options" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </el-row>
+    </div>
+
+    <el-divider></el-divider>
+
+    <div>
+      <el-row style="background:rgb(240, 242, 245);">
+        <perf-line-chart  :frameStep=frameChart.frameStep :requestParam=frameChart.requestParams :runID=currentRunID :legendArr=frameChart.legendArr
+          :title=frameChart.title :yAxisName=frameChart.yAxisName :key=frameChart.chartKey />
+        <label>合并:</label>
+        <el-select v-model="frameChart.frameStep" placeholder="请选择" @change="onFrameChartChange">
+          <el-option v-for="item in frame_options" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+      </el-row>
+    </div>
+
+    <el-divider></el-divider>
+
+    <div>
+      <el-row style="background:rgb(240, 242, 245);">
+        <perf-line-chart  :frameStep=drawCallChart.frameStep :requestParam=drawCallChart.requestParams :runID=currentRunID :legendArr=drawCallChart.legendArr
+          :title=drawCallChart.title :yAxisName=drawCallChart.yAxisName :key=drawCallChart.chartKey />
+        <label>合并:</label>
+        <el-select v-model="drawCallChart.frameStep" placeholder="请选择" @change="onDrawCallChartChange">
+          <el-option v-for="item in frame_options" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
       </el-row>
     </div>
 
@@ -37,9 +51,8 @@
 
 <script>
 
-import FrameChart from '@/components/FrameChart'
 import FramePanel from '@/components/FramePanel'
-import PerfChart from '@/components/PerfChart'
+import PerfLineChart from '@/components/PerfLineChart'
 
 export default{
   data () {
@@ -64,21 +77,54 @@ export default{
         label: '单帧'
       }],
 
-      value: 100,
-      frameChartKey: 0,
-      perfParams: 'FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime'
+      currentRunID: parseInt(this.$route.params.id),
+
+      fpsChart: {
+        requestParams: 'FrameTime',
+        legendArr: ['FPS'],
+        frameStep: 100,
+        chartKey: 0,
+        title: 'FPS',
+        yAxisName: '帧'
+      },
+
+      frameChart: {
+        requestParams: 'FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime',
+        legendArr: ['FrameTime', 'GameThreadTime', 'RenderThreadTime', 'RHIThreadTime', 'GPUTime'],
+        frameStep: 100,
+        chartKey: 0,
+        title: 'Frame',
+        yAxisName: 'ms'
+      },
+
+      drawCallChart: {
+        requestParams: 'RHI_DrawCalls,DrawCall_Prepass,DrawCall_BasePass,DrawCall_ShadowDepths,DrawCall_Translucency,DrawCall_SlateUI',
+        legendArr: ['RHI_DrawCalls', 'DrawCall_Prepass', 'DrawCall_BasePass', 'DrawCall_ShadowDepths', 'DrawCall_Translucency', 'DrawCall_SlateUI'],
+        frameStep: 100,
+        chartKey: 0,
+        title: 'DrawCall',
+        yAxisName: 'drawcall'
+      }
     }
   },
+
   methods: {
-    onFrameSelectChange () {
-      this.frameChartKey += 1
+    onFPSChartChange () {
+      this.fpsChart.chartKey += 1
+    },
+
+    onFrameChartChange () {
+      this.frameChart.chartKey += 1
+    },
+
+    onDrawCallChartChange () {
+      this.drawCallChart.chartKey += 1
     }
   },
 
   components: {
-    FrameChart,
     FramePanel,
-    PerfChart
+    PerfLineChart
   }
 }
 

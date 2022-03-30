@@ -35,6 +35,7 @@ export default {
       let requestArr = this.requestParam.split(',')
       let perfParams = []
       for (var i = 0; i < requestArr.length; i++) {
+        //利用反射获取值
         let perfVal = Reflect.get(res, requestArr[i]).map(Number)
         if (this.legendArr[i] === 'FPS') {
           let fpsValues = []

@@ -11,6 +11,13 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/perfapi': {
+        target: 'http://192.168.208.128/assetdb/perf',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/perfapi': ''
+        }
+      }
     },
 
     // Various Dev Server settings

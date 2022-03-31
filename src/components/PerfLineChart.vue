@@ -35,15 +35,20 @@ export default {
 
   methods: {
     async loadData () {
-      let dataURL = 'http://192.168.182.128/assetdb/pub/perf/get_perf_detail.php?request_param=' + this.requestParam + '&run_id=' + this.runID + '&frame_interval=' + this.frameStep
+      let dataURL = '/perfapi/get_perf_detail.php?request_param=' + this.requestParam + '&run_id=' + this.runID + '&frame_interval=' + this.frameStep
       console.info(dataURL)
       const {data: res} = await this.$http.get(dataURL)
-
       let requestArr = this.requestParam.split(',')
       let perfParams = []
+      let maxVal = 0
       for (var i = 0; i < requestArr.length; i++) {
         // 利用反射获取值
-        let perfVal = Reflect.get(res, requestArr[i]).map(Number)
+        let perfVal = Reflect.get(res, requestArr[i]).map(Math.round)
+        let curMaxVal = Math.max.apply(null, perfVal)
+        if (curMaxVal > maxVal) {
+          maxVal = curMaxVal
+        }
+
         if (this.legendArr[i] === 'FPS') {
           let fpsValues = []
           perfVal.forEach(item => fpsValues.push(Math.floor(1000 / item)))
@@ -96,6 +101,11 @@ export default {
 
         series: seriesArr
       }
+
+      if (this.yAxisMax > 0 && maxVal > this.yAxisMax) {
+        option.yAxis.max = this.yAxisMax
+      }
+
       chart.setOption(option)
     }
   }

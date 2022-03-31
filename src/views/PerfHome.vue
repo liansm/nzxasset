@@ -1,12 +1,12 @@
 <template>
   <div class="dashboard-container">
-    <frame-panel />
+    <frame-panel :runID=currentRunID />
     <el-divider></el-divider>
 
     <div v-for="(chart,index) in charts" :key='index'>
       <el-row style="background:rgb(240, 242, 245);">
         <perf-line-chart  :frameStep=chart.frameStep :requestParam=chart.requestParams :runID=currentRunID :legendArr=chart.legendArr :typeArr=chart.typeArr
-          :title=chart.title :yAxisName=chart.yAxisName :key=chart.chartKey />
+          :title=chart.title :yAxisName=chart.yAxisName :yAxisMax=chart.yAxisMax :key=chart.chartKey />
         <label>合并:</label>
         <el-select v-model="chart.frameStep" placeholder="请选择" @change="onChartChange(index)">
           <el-option v-for="item in frameOptions" :key="item.value" :label="item.label" :value="item.value">
@@ -37,7 +37,8 @@ export default{
           frameStep: 100,
           chartKey: 0,
           title: 'FPS',
-          yAxisName: '帧'
+          yAxisName: '帧',
+          yAxisMax: 0
         },
 
         {
@@ -47,7 +48,8 @@ export default{
           frameStep: 100,
           chartKey: 0,
           title: 'Frame',
-          yAxisName: 'ms'
+          yAxisName: 'ms',
+          yAxisMax: 100
         },
 
         {
@@ -57,7 +59,8 @@ export default{
           frameStep: 100,
           chartKey: 0,
           title: 'DrawCall',
-          yAxisName: 'drawcall'
+          yAxisName: 'drawcall',
+          yAxisMax: 0
         }
       ]
     }

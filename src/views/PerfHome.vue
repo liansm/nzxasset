@@ -12,7 +12,7 @@
           :title=chart.title :yAxisName=chart.yAxisName :key=chart.chartKey />
         <label>合并:</label>
         <el-select v-model="chart.frameStep" placeholder="请选择" @change="onChartChange(index)">
-          <el-option v-for="item in frame_options" :key="item.value" :label="item.label" :value="item.value">
+          <el-option v-for="item in frameOptions" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
       </el-row>
@@ -29,26 +29,7 @@ import PerfLineChart from '@/components/PerfLineChart'
 export default{
   data () {
     return {
-      frame_options: [{
-        value: 100,
-        label: '100帧'
-      }, {
-        value: 50,
-        label: '50帧'
-      }, {
-        value: 20,
-        label: '20帧'
-      }, {
-        value: 10,
-        label: '10帧'
-      }, {
-        value: 5,
-        label: '5帧'
-      }, {
-        value: 1,
-        label: '单帧'
-      }],
-
+      frameOptions: [{ value: 100, label: '100帧' }, { value: 50, label: '50帧' }, { value: 20, label: '20帧' }, { value: 10, label: '10帧' }, { value: 5, label: '5帧' }, { value: 1, label: '单帧' }],
       currentRunID: parseInt(this.$route.params.id),
       charts: [
         {

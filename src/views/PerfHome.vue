@@ -6,40 +6,12 @@
     <el-divider></el-divider>
     -->
 
-    <div>
+    <div v-for="(chart,index) in charts" :key='index'>
       <el-row style="background:rgb(240, 242, 245);">
-        <perf-line-chart  :frameStep=fpsChart.frameStep :requestParam=fpsChart.requestParams :runID=currentRunID :legendArr=fpsChart.legendArr :typeArr=fpsChart.typeArr
-          :title=fpsChart.title :yAxisName=fpsChart.yAxisName :key=fpsChart.chartKey />
+        <perf-line-chart  :frameStep=chart.frameStep :requestParam=chart.requestParams :runID=currentRunID :legendArr=chart.legendArr :typeArr=chart.typeArr
+          :title=chart.title :yAxisName=chart.yAxisName :key=chart.chartKey />
         <label>合并:</label>
-        <el-select v-model="fpsChart.frameStep" placeholder="请选择" @change="onFPSChartChange">
-          <el-option v-for="item in frame_options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-row>
-    </div>
-
-    <el-divider></el-divider>
-
-    <div>
-      <el-row style="background:rgb(240, 242, 245);">
-        <perf-line-chart  :frameStep=frameChart.frameStep :requestParam=frameChart.requestParams :runID=currentRunID :legendArr=frameChart.legendArr :typeArr=frameChart.typeArr
-          :title=frameChart.title :yAxisName=frameChart.yAxisName :yAxisMax=frameChart.yAxisMax :key=frameChart.chartKey />
-        <label>合并:</label>
-        <el-select v-model="frameChart.frameStep" placeholder="请选择" @change="onFrameChartChange">
-          <el-option v-for="item in frame_options" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
-      </el-row>
-    </div>
-
-    <el-divider></el-divider>
-
-    <div>
-      <el-row style="background:rgb(240, 242, 245);">
-        <perf-line-chart  :frameStep=drawCallChart.frameStep :requestParam=drawCallChart.requestParams :runID=currentRunID :legendArr=drawCallChart.legendArr :typeArr=drawCallChart.typeArr
-          :title=drawCallChart.title :yAxisName=drawCallChart.yAxisName :key=drawCallChart.chartKey />
-        <label>合并:</label>
-        <el-select v-model="drawCallChart.frameStep" placeholder="请选择" @change="onDrawCallChartChange">
+        <el-select v-model="chart.frameStep" placeholder="请选择" @change="onChartChange(index)">
           <el-option v-for="item in frame_options" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
@@ -78,51 +50,43 @@ export default{
       }],
 
       currentRunID: parseInt(this.$route.params.id),
+      charts: [
+        {
+          requestParams: 'FrameTime',
+          legendArr: ['FPS'],
+          typeArr: ['line'],
+          frameStep: 100,
+          chartKey: 0,
+          title: 'FPS',
+          yAxisName: '帧'
+        },
 
-      fpsChart: {
-        requestParams: 'FrameTime',
-        legendArr: ['FPS'],
-        typeArr: ['line'],
-        frameStep: 100,
-        chartKey: 0,
-        title: 'FPS',
-        yAxisName: '帧'
-      },
+        {
+          requestParams: 'FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime',
+          legendArr: ['FrameTime', 'GameThreadTime', 'RenderThreadTime', 'RHIThreadTime', 'GPUTime'],
+          typeArr: ['line', 'line', 'line', 'line', 'line'],
+          frameStep: 100,
+          chartKey: 0,
+          title: 'Frame',
+          yAxisName: 'ms'
+        },
 
-      frameChart: {
-        requestParams: 'FrameTime,GameThreadTime,RenderThreadTime,RHIThreadTime,GPUTime',
-        legendArr: ['FrameTime', 'GameThreadTime', 'RenderThreadTime', 'RHIThreadTime', 'GPUTime'],
-        typeArr: ['line', 'line', 'line', 'line', 'line'],
-        frameStep: 100,
-        chartKey: 0,
-        title: 'Frame',
-        yAxisName: 'ms',
-        yAxisMax: 200
-      },
-
-      drawCallChart: {
-        requestParams: 'RHI_DrawCalls,DrawCall_HZB,DrawCall_Prepass,DrawCall_BasePass,DrawCall_ShadowDepths,DrawCall_ParticleSimulation,DrawCall_SlateUI',
-        legendArr: ['RHI_DrawCalls', 'HZB', 'Prepass', 'BasePass', 'ShadowDepths', 'ParticleSimulation', 'SlateUI'],
-        typeArr: ['line', 'line', 'line', 'line', 'line', 'line', 'line'],
-        frameStep: 100,
-        chartKey: 0,
-        title: 'DrawCall',
-        yAxisName: 'drawcall'
-      }
+        {
+          requestParams: 'RHI_DrawCalls,DrawCall_HZB,DrawCall_Prepass,DrawCall_BasePass,DrawCall_ShadowDepths,DrawCall_ParticleSimulation,DrawCall_SlateUI',
+          legendArr: ['RHI_DrawCalls', 'HZB', 'Prepass', 'BasePass', 'ShadowDepths', 'ParticleSimulation', 'SlateUI'],
+          typeArr: ['line', 'line', 'line', 'line', 'line', 'line', 'line'],
+          frameStep: 100,
+          chartKey: 0,
+          title: 'DrawCall',
+          yAxisName: 'drawcall'
+        }
+      ]
     }
   },
 
   methods: {
-    onFPSChartChange () {
-      this.fpsChart.chartKey += 1
-    },
-
-    onFrameChartChange () {
-      this.frameChart.chartKey += 1
-    },
-
-    onDrawCallChartChange () {
-      this.drawCallChart.chartKey += 1
+    onChartChange (index) {
+      this.charts[index].chartKey += 1
     }
   },
 

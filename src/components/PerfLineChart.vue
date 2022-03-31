@@ -8,6 +8,7 @@
 
 let echarts = require('echarts/lib/echarts')
 require('echarts/lib/chart/line')
+require('echarts/lib/chart/bar')
 require('echarts/lib/component/tooltip')
 require('echarts/lib/component/title')
 require('echarts/lib/component/legend')
@@ -18,9 +19,14 @@ export default {
     frameStep: Number,
     requestParam: String,
     legendArr: [],
+    typeArr: [],
     runID: Number,
     title: String,
-    yAxisName: String
+    yAxisName: String,
+    yAxisMax: {
+      type: Number,
+      default: 0
+    }
   },
 
   mounted () {
@@ -30,12 +36,13 @@ export default {
   methods: {
     async loadData () {
       let dataURL = 'http://192.168.182.128/assetdb/pub/perf/get_perf_detail.php?request_param=' + this.requestParam + '&run_id=' + this.runID + '&frame_interval=' + this.frameStep
+      console.info(dataURL)
       const {data: res} = await this.$http.get(dataURL)
 
       let requestArr = this.requestParam.split(',')
       let perfParams = []
       for (var i = 0; i < requestArr.length; i++) {
-        //利用反射获取值
+        // 利用反射获取值
         let perfVal = Reflect.get(res, requestArr[i]).map(Number)
         if (this.legendArr[i] === 'FPS') {
           let fpsValues = []
@@ -50,7 +57,7 @@ export default {
 
       let seriesArr = []
       for (var j = 0; j < this.legendArr.length; j++) {
-        let seriesVal = { name: this.legendArr[j], type: 'line', smooth: true, data: perfParams[j] }
+        let seriesVal = { name: this.legendArr[j], type: this.typeArr[j], smooth: true, data: perfParams[j] }
         seriesArr.push(seriesVal)
       }
 
@@ -74,7 +81,8 @@ export default {
         },
 
         xAxis: {
-          type: 'category'
+          type: 'category',
+          boundaryGap: true
         },
 
         yAxis: {

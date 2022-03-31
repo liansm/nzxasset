@@ -56,23 +56,28 @@
       </el-col>
     </el-row>
 
-  <el-row :gutter="100" class="panel-group" >
-      <el-col :span="5" class="card-panel-pie-col">
-        <div style="height:350px" id="framePieChart"></div>
-      </el-col>
-      <el-col :span="5" class="card-panel-pie-col">
-        <div style="height:350px" id="gameThreadPieChart"></div>
-      </el-col>
-      <el-col :span="5" class="card-panel-pie-col">
-        <div style="height:350px" id="renderThreadPieChart"></div>
-      </el-col>
-      <el-col :span="5" class="card-panel-pie-col">
-        <div style="height:350px" id="rhiThreadPieChart"></div>
-      </el-col>
-      <el-col :span="4" class="card-panel-pie-col">
-        <div style="height:350px" id="gpuPieChart"></div>
-      </el-col>
-  </el-row>
+  <div>
+    <el-row :gutter="100" class="panel-group" style="background:rgb(240, 242, 245);" >
+        <el-col :span="8" class="card-panel-pie-col">
+          <div style="height:350px" id="framePieChart"></div>
+        </el-col>
+        <el-col :span="8" class="card-panel-pie-col">
+          <div style="height:350px" id="gameThreadPieChart"></div>
+        </el-col>
+        <el-col :span="8" class="card-panel-pie-col">
+          <div style="height:350px" id="renderThreadPieChart"></div>
+        </el-col>
+    </el-row>
+    <el-divider></el-divider>
+    <el-row :gutter="100" class="panel-group" style="background:rgb(240, 242, 245);" >
+        <el-col :span="8" class="card-panel-pie-col">
+          <div style="height:350px" id="rhiThreadPieChart"></div>
+        </el-col>
+        <el-col :span="8" class="card-panel-pie-col">
+          <div style="height:350px" id="gpuPieChart"></div>
+        </el-col>
+    </el-row>
+  </div>
 
   </div>
 </template>
@@ -113,6 +118,8 @@ export default {
     initPieChart () {
       let pieChartID = ['framePieChart', 'gameThreadPieChart', 'renderThreadPieChart', 'rhiThreadPieChart', 'gpuPieChart']
       let pieTitle = ['Frame', 'GameThread', 'RenderThread', 'RHIThread', 'GPU']
+      let pieSubText= [this.outlineData.FrameTime.avg_value.toFixed(1), this.outlineData.GameThreadTime.avg_value.toFixed(1), this.outlineData.RenderThreadTime.avg_value.toFixed(1), 
+          this.outlineData.RHIThreadTime.avg_value.toFixed(1), this.outlineData.GPUTime.avg_value.toFixed(1)] 
 
       for (var i = 0; i < pieChartID.length; i++) {
         var chartDom = document.getElementById(pieChartID[i])
@@ -120,10 +127,12 @@ export default {
         let option = {
           title: {
             text: pieTitle[i],
+            subtext: '平均时间:' + pieSubText[i],
             left: 'center'
           },
           tooltip: {
-            trigger: 'item'
+            trigger: 'item',
+            formatter: '{b}占比: {d}%'
           },
           series: [
             {

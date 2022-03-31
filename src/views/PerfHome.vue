@@ -1,10 +1,7 @@
 <template>
   <div class="dashboard-container">
-
-    <!--
     <frame-panel />
     <el-divider></el-divider>
-    -->
 
     <div v-for="(chart,index) in charts" :key='index'>
       <el-row style="background:rgb(240, 242, 245);">
@@ -16,6 +13,7 @@
           </el-option>
         </el-select>
       </el-row>
+      <el-divider></el-divider>
     </div>
 
   </div>

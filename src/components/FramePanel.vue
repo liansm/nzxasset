@@ -2,23 +2,23 @@
   <div>
     <div>
     <el-row :gutter="100" class="panel-group" >
-      <el-col :span="8" class="card-panel-col">
-        <div class="card-panel grid-content bg-purple" v-if="dataReady">
-          <el-row type="flex" justify="start">基本信息</el-row>
+      <el-col :span="8" class="card-panel-col" v-if="dataReady" >
+       <div class="card-panel grid-content bg-purple" v-if="dataReady">
+          <el-row type="flex" justify="center">基本信息</el-row>
           <el-row type="flex" justify="start">地图号: {{ outlineData.MapID }} </el-row>
           <el-row type="flex" justify="start">路径名: {{ outlineData.PathName }} </el-row>
           <el-row type="flex" justify="start">总帧数: {{ outlineData.FrameCount }} </el-row>
           <el-row type="flex" justify="start">平均FPS: {{ (1000/outlineData.FrameTime.avg_value).toFixed(1) }}帧 </el-row>
           <el-row type="flex" justify="start">平均Drawcall: {{ (outlineData.RHI_Drawcalls.avg_value).toFixed(0) }} </el-row>
+          <el-row type="flex" justify="start">平均面数: {{ (outlineData.RHI_PrimitivesDrawn.avg_value).toFixed(0) }} </el-row>
           <el-row type="flex" justify="start">天气: {{ outlineData.GameWeather }} </el-row>
-          <el-row type="flex" justify="start">游戏时间: {{ outlineData.GameTime }}点 </el-row>
+          <el-row type="flex" justify="start">游戏时间: {{ parseInt(outlineData.GameTime) }}点 </el-row>
           <el-row type="flex" justify="start">运行时间: {{ outlineData.RunDate}}-{{ outlineData.RunTime }}</el-row>
-        </div>
+      </div>
       </el-col>
       <el-col :span="8" class="card-panel-col">
         <div class="card-panel grid-content bg-purple" v-if="dataReady">
-          <el-row type="flex" justify="start">高级信息</el-row>
-          <el-row type="flex" justify="start">平均面数: {{ (outlineData.RHI_PrimitivesDrawn.avg_value).toFixed(0) }} </el-row>
+          <el-row type="flex" justify="center">其他信息</el-row>
           <el-row type="flex" justify="start">物理内存平均: {{ (outlineData.PhysicalUsedMB.avg_value).toFixed(0) }}MB </el-row>
           <el-row type="flex" justify="start">物理内存峰值: {{ (outlineData.PhysicalUsedMB.max_value).toFixed(0) }}MB </el-row>
           <el-row type="flex" justify="start">虚拟内存平均: {{ (outlineData.VirtualUsedMB.avg_value).toFixed(0) }}MB </el-row>
@@ -27,13 +27,21 @@
           <el-row type="flex" justify="start">RenderTarget池最大: {{ (outlineData.RenderTargetPoolSize.max_value).toFixed(0) }}MB </el-row>
           <el-row type="flex" justify="start">TextureStreaming池平均: {{ (outlineData.TextureStreaming_StreamingPool.avg_value).toFixed(0) }}MB </el-row>
           <el-row type="flex" justify="start">TextureStreaming池最大: {{ (outlineData.TextureStreaming_StreamingPool.max_value).toFixed(0) }}MB </el-row>
+          <el-row type="flex" justify="start">UObject数量: {{ outlineData.TotalUObjectCount }} </el-row>
         </div>
       </el-col>
       <el-col :span="8" class="card-panel-col">
         <div class="card-panel grid-content bg-purple" v-if="dataReady">
-          <el-row type="flex" justify="start">硬件信息</el-row>
-          <el-row type="flex" justify="start">平均帧率: {{ (1000/outlineData.FrameTime.avg_value).toFixed(1) }}帧 </el-row>
-          <el-row type="flex" justify="start">平均DrawCall: {{ (outlineData.RHI_Drawcalls.avg_value).toFixed(0) }} </el-row>
+          <el-row type="flex" justify="center">环境信息</el-row>
+          <el-row type="flex" justify="start">操作系统: {{ outlineData.OSVersion }} </el-row>
+          <el-row type="flex" justify="start">版本号: {{ outlineData.BuildNumber }} </el-row>
+          <el-row type="flex" justify="start">CPU: {{ outlineData.CPUBrand }} {{ outlineData.CPUCoreNums }}核 {{ outlineData.CPUCoreNumsIncludingHyperThreads }}超线程 </el-row>
+          <el-row type="flex" justify="start">GPU: {{ outlineData.PrimaryGPUBrand}} </el-row>
+          <el-row type="flex" justify="start">物理内存: {{ Math.round(outlineData.TotalPhysicalMemory / (1024*1024*1024))}}GB </el-row>
+          <el-row type="flex" justify="start">可用物理内存: {{ Math.round(outlineData.AvailablePhysicalMemory / (1024*1024*1024))}}GB </el-row>
+          <el-row type="flex" justify="start">使用物理内存: {{ Math.round(outlineData.UsedPhysicalMemory / (1024*1024*1024))}}GB </el-row>
+          <el-row type="flex" justify="start">IP地址: {{ outlineData.IPAddress }} </el-row>
+          <el-row type="flex" justify="start">MAC地址: {{ outlineData.MacAddress }} </el-row>
         </div>
       </el-col>
     </el-row>

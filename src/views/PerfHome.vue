@@ -82,7 +82,7 @@ export default{
 
 <style>
   .dashboard-container {
-     padding: 32px;
+     padding: 2px;
      position: relative;
    }
 
@@ -91,7 +91,7 @@ export default{
     background-color: rgb(240, 242, 245);
 
     .card-panel-col {
-      margin-bottom: 32px;
+      margin-bottom: 10px;
     }
 
     .card-panel {
@@ -117,7 +117,8 @@ export default{
     background: #e5e9f2;
   }
   .grid-content {
-    border-radius: 4px;
+    border-radius: 20px;
     min-height: 76px;
+    margin-left: 10px;
   }
 </style>

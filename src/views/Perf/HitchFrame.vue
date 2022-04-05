@@ -1,5 +1,5 @@
 <template>
-  <el-table :data=hitchFrames max-height="1000" style="width:100%" stripe="true">
+  <el-table :data=hitchFrames max-height="1000" style="width:100%">
     <el-table-column prop="FrameCount" label="第几帧" width="100"></el-table-column>
     <el-table-column prop="FrameTime" label="帧时间(ms)" width="100"></el-table-column>
 
@@ -49,18 +49,19 @@ export default{
         item.RenderThreadTime = item.RenderThreadTime.toFixed(2)
         item.RHIThreadTime = item.RHIThreadTime.toFixed(2)
         item.GPUTime = item.GPUTime.toFixed(2)
-        item.Pos = '(' + item.View_PosX + ',' + item.View_PosY + ',' +  parseInt(item.View_PosZ) + ')'
+        item.Pos = '(' + item.View_PosX + ',' + item.View_PosY + ',' + parseInt(item.View_PosZ) + ')'
       })
     }
   },
 
   filters: {
-    numberFilter (value ) {
-      return value.toFixed(2);
+    numberFilter (value) {
+      return value.toFixed(2)
     }
   }
 }
 
 </script>
+
 <style>
 </style>

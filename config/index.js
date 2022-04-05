@@ -12,8 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/perfapi': {
-//        target: 'http://192.168.208.128/assetdb/perf',
-        target: 'http://192.168.182.128/assetdb/pub/perf',
+        target: 'http://192.168.208.128/assetdb/perf',
+//        target: 'http://192.168.182.128/assetdb/pub/perf',
         changeOrigin: true,
         pathRewrite: {
           '^/perfapi': ''

@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import FrameChart from '@/components/FrameChart'
-import PerfHome from '@/views/PerfHome'
+
+import PerfOutline from '@/views/PerfOutline'
 import HitchFrame from '@/views/Perf/HitchFrame'
+import FrameDetail from '@/views/Perf/FrameDetail'
 
 Vue.use(Router)
 
@@ -15,18 +16,23 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path: '/test_echart',
-      name: 'FrameChart',
-      component: FrameChart
-    },
-    {
       path: '/perf_home/:id/',
       name: 'PerfHome',
       component: PerfHome
     },
     {
+      path: '/perf/PerfOutline/:id/',
+      name: 'PerfOutline',
+      component: PerfOutline
+    },
+    {
       path: '/perf/hitch_frame/:id/',
       name: 'HitchFrame',
+      component: HitchFrame
+    },
+    {
+      path: '/perf/frame_detail/:id/',
+      name: 'FrameDetail',
       component: HitchFrame
     }
   ]

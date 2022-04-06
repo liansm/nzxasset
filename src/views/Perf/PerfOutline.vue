@@ -21,8 +21,8 @@
 
 <script>
 
-import FramePanel from '@/components/FramePanel'
-import PerfLineChart from '@/components/PerfLineChart'
+import FramePanel from '@/components/Perf/FramePanel'
+import PerfLineChart from '@/components/Perf/PerfLineChart'
 
 export default{
   data () {

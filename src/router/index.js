@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 
-import PerfOutline from '@/views/PerfOutline'
+import PerfOutline from '@/views/Perf/PerfOutline'
 import HitchFrame from '@/views/Perf/HitchFrame'
 import FrameDetail from '@/views/Perf/FrameDetail'
 
@@ -16,24 +16,19 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path: '/perf_home/:id/',
-      name: 'PerfHome',
-      component: PerfHome
-    },
-    {
-      path: '/perf/PerfOutline/:id/',
+      path: '/perf/get_perf/:id/',
       name: 'PerfOutline',
       component: PerfOutline
     },
     {
-      path: '/perf/hitch_frame/:id/',
+      path: '/perf/get_hitch_frame/:id/',
       name: 'HitchFrame',
       component: HitchFrame
     },
     {
-      path: '/perf/frame_detail/:id/',
+      path: '/perf/get_frame_detail/:id/',
       name: 'FrameDetail',
-      component: HitchFrame
+      component: FrameDetail
     }
   ]
 })
